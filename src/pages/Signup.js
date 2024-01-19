@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import loginImage from "../assets/login.svg";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { createUser } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser, googlelogin, resetError } from "../features/auth/authSlice";
+import toast from "react-hot-toast";
 const Signup = () => {
+  const {isError, error} = useSelector((state) => state.auth)
   const { handleSubmit, register, reset, control } = useForm();
   const password = useWatch({ control, name: "password" });
   const confirmPassword = useWatch({ control, name: "confirmPassword" });
@@ -29,6 +31,19 @@ const Signup = () => {
   const onSubmit = (data) => {
     dispatch(createUser({email: data.email, password: data.password}))
   };
+
+ 
+
+  const handleGoogleLogin = () => {
+    dispatch(googlelogin());
+  }
+
+  useEffect(() => {
+    if(isError){
+      toast.error(error);
+      dispatch(resetError())
+    }
+  }, [isError, error, dispatch])
 
   return (
     <div className='flex h-screen items-center pt-14'>
@@ -93,6 +108,13 @@ const Signup = () => {
                   </span>
                 </p>
               </div>
+              <button
+                  onClick={handleGoogleLogin}
+                  type='button'
+                  className='font-bold text-white py-3 rounded-full bg-primary w-full'
+                >
+                  Login with Google
+                </button>
             </div>
           </form>
         </div>
