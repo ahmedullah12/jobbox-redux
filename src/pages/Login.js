@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { googlelogin, loginUser, resetError } from "../features/auth/authSlice";
 import toast from "react-hot-toast";
 const Login = () => {
-  const {isLoading, email, isError, error} = useSelector((state) => state.auth)
+  const {isLoading, user: {email}, isError, error} = useSelector((state) => state.auth)
   const { register, handleSubmit, reset } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();

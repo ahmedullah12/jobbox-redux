@@ -1,13 +1,16 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import Loading from "../components/reusable/Loading";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleLoading } from "../features/auth/authSlice";
 
 const PrivateRoute = ({ children }) => {
   const { pathname } = useLocation();
-  const isLoading = false;
-  const email = "test@gmail.com";
+  const {user: {email}, isLoading} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   if (isLoading) {
+    dispatch(toggleLoading())
     return <Loading />;
   }
 

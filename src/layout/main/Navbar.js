@@ -8,7 +8,7 @@ import { logout } from "../../features/auth/authSlice";
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const {email} = useSelector((state) => state.auth);
+  const {user: {email, role}} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const handleSignOut = () => {
@@ -46,11 +46,19 @@ const Navbar = () => {
           </Link>
         </li>}
         {
-          email && <Link
+          (email && role) && <Link
           className='border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all '
           to='/dashboard'
         >
           Dashboard
+        </Link>
+        }
+        {
+          (email &&!role) &&  <Link
+          className='border border-black px-2 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary hover:px-4 transition-all '
+          to='/register'
+        >
+          Get Started
         </Link>
         }
       </ul>
